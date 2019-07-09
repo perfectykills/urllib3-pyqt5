@@ -36,7 +36,7 @@ __version__ = "1.10.0"
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 PY34 = sys.version_info[0:2] >= (3, 4)
-
+from PyQt5.QtCore import QObject
 if PY3:
     string_types = (str,)
     integer_types = (int,)
@@ -57,7 +57,7 @@ else:
         MAXSIZE = int((1 << 31) - 1)
     else:
         # It's possible to have sizeof(long) != sizeof(Py_ssize_t).
-        class X(object):
+        class X(QObject):
             def __len__(self):
                 return 1 << 31
 
@@ -83,7 +83,7 @@ def _import_module(name):
     return sys.modules[name]
 
 
-class _LazyDescr(object):
+class _LazyDescr(QObject):
     def __init__(self, name):
         self.name = name
 
@@ -157,7 +157,7 @@ class MovedAttribute(_LazyDescr):
         return getattr(module, self.attr)
 
 
-class _SixMetaPathImporter(object):
+class _SixMetaPathImporter(QObject):
 
     """
     A meta path importer to import six.moves and its submodules.
@@ -167,6 +167,7 @@ class _SixMetaPathImporter(object):
     """
 
     def __init__(self, six_module_name):
+        super(_SixMetaPathImporter, self).__init__()
         self.name = six_module_name
         self.known_modules = {}
 
@@ -568,7 +569,7 @@ if PY3:
     def create_unbound_method(func, cls):
         return func
 
-    Iterator = object
+    Iterator = QObject()
 else:
 
     def get_unbound_function(unbound):
@@ -580,7 +581,7 @@ else:
     def create_unbound_method(func, cls):
         return types.MethodType(func, None, cls)
 
-    class Iterator(object):
+    class Iterator(QObject):
         def next(self):
             return type(self).__next__(self)
 

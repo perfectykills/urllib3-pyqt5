@@ -121,5 +121,5 @@ def merge_paths(base_uri, relative_path):
         index = path.rfind("/")
         return path[:index] + "/" + relative_path
 
-
-UseExisting = object()
+from PyQt5.QtCore import QObject
+UseExisting = QObject()

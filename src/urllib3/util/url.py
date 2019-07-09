@@ -186,6 +186,7 @@ def _encode_invalid_chars(component, allowed_chars, encoding="utf-8"):
 
 
 def parse_url(url):
+    print(">parse_url")
     """
     Given a url, return a parsed :class:`.Url` namedtuple. Best-effort is
     performed to parse incomplete urls. Fields not provided will be None.
@@ -209,17 +210,24 @@ def parse_url(url):
         return Url()
 
     is_string = not isinstance(url, six.binary_type)
+    print("six binary_type check")
 
     # RFC 3986 doesn't like URLs that have a host but don't start
     # with a scheme and we support URLs like that so we need to
     # detect that problem and add an empty scheme indication.
     # We don't get hurt on path-only URLs here as it's stripped
     # off and given an empty scheme anyways.
+    print(url)
+    print(SCHEME_REGEX)
     if not SCHEME_REGEX.search(url):
         url = "//" + url
 
+    print("RFC 3986 scheme fix")
+
     def idna_encode(name):
+        print(">idna_encode")
         if name and any([ord(x) > 128 for x in name]):
+            print("need change")
             try:
                 import idna
             except ImportError:
@@ -227,13 +235,17 @@ def parse_url(url):
                     "Unable to parse URL without the 'idna' module"
                 )
             try:
+                print("idna import")
                 return idna.encode(name.lower(), strict=True, std3_rules=True)
             except idna.IDNAError:
                 raise LocationParseError(u"Name '%s' is not a valid IDNA label" % name)
+        print("go anyway")
         return name
 
     try:
         split_iri = misc.IRI_MATCHER.match(compat.to_str(url)).groupdict()
+        print("split_iri")
+        print(split_iri)
         iri_ref = rfc3986.IRIReference(
             split_iri["scheme"],
             split_iri["authority"],
@@ -241,19 +253,28 @@ def parse_url(url):
             _encode_invalid_chars(split_iri["query"], QUERY_CHARS),
             _encode_invalid_chars(split_iri["fragment"], FRAGMENT_CHARS),
         )
+        print("init IRIReference")
         has_authority = iri_ref.authority is not None
+        print("iri_ref has_authority")
         uri_ref = iri_ref.encode(idna_encoder=idna_encode)
+        print("iri_ref uri_ref encode")
     except (ValueError, RFC3986Exception):
+        print("RFC3986Exception")
         return six.raise_from(LocationParseError(url), None)
+    print("iri stuff")
 
     # rfc3986 strips the authority if it's invalid
     if has_authority and uri_ref.authority is None:
         raise LocationParseError(url)
 
+    print("has_authority check rfc3986")
+
     # Only normalize schemes we understand to not break http+unix
     # or other schemes that don't follow RFC 3986.
     if uri_ref.scheme is None or uri_ref.scheme.lower() in NORMALIZABLE_SCHEMES:
         uri_ref = uri_ref.normalize()
+
+    print("RFC 3986 normalize")
 
     # Validate all URIReference components and ensure that all
     # components that were set before are still set after
@@ -263,6 +284,8 @@ def parse_url(url):
         validator.check_validity_of(*validator.COMPONENT_NAMES).validate(uri_ref)
     except ValidationError:
         return six.raise_from(LocationParseError(url), None)
+
+    print("URIReference validate")
 
     # For the sake of backwards compatibility we put empty
     # string values for path if there are any defined values
@@ -274,6 +297,7 @@ def parse_url(url):
             path = ""
         else:
             path = None
+    print("path query fragment fix")
 
     # Ensure that each part of the URL is a `str` for
     # backwards compatibility.

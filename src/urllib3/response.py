@@ -28,8 +28,8 @@ from .util.response import is_fp_closed, is_response_to_head
 
 log = logging.getLogger(__name__)
 
-
-class DeflateDecoder(object):
+from PyQt5.QtCore import QObject
+class DeflateDecoder(QObject):
     def __init__(self):
         self._first_try = True
         self._data = b""
@@ -61,14 +61,14 @@ class DeflateDecoder(object):
                 self._data = None
 
 
-class GzipDecoderState(object):
+class GzipDecoderState(QObject):
 
     FIRST_MEMBER = 0
     OTHER_MEMBERS = 1
     SWALLOW_DATA = 2
 
 
-class GzipDecoder(object):
+class GzipDecoder(QObject):
     def __init__(self):
         self._obj = zlib.decompressobj(16 + zlib.MAX_WBITS)
         self._state = GzipDecoderState.FIRST_MEMBER
@@ -100,7 +100,7 @@ class GzipDecoder(object):
 
 if brotli is not None:
 
-    class BrotliDecoder(object):
+    class BrotliDecoder(QObject):
         # Supports both 'brotlipy' and 'Brotli' packages
         # since they share an import name. The top branches
         # are for 'brotlipy' and bottom branches for 'Brotli'
@@ -118,7 +118,7 @@ if brotli is not None:
             return b""
 
 
-class MultiDecoder(object):
+class MultiDecoder(QObject):
     """
     From RFC7231:
         If one or more encodings have been applied to a representation, the

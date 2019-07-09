@@ -7,16 +7,17 @@ import time
 
 from ..exceptions import TimeoutStateError
 
+from PyQt5.QtCore import QObject
+
 # A sentinel value to indicate that no timeout was specified by the user in
 # urllib3
-_Default = object()
+_Default = QObject()
 
 
 # Use time.monotonic if available.
 current_time = getattr(time, "monotonic", time.time)
 
-
-class Timeout(object):
+class Timeout(QObject):
     """ Timeout configuration.
 
     Timeouts can be defined as a default for a pool::

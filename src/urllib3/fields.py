@@ -121,8 +121,8 @@ def format_header_param_html5(name, value):
 # For backwards-compatibility.
 format_header_param = format_header_param_html5
 
-
-class RequestField(object):
+from PyQt5.QtCore import QObject
+class RequestField(QObject):
     """
     A data container for request body parameters.
 

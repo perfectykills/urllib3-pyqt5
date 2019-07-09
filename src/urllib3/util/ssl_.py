@@ -109,8 +109,8 @@ DEFAULT_CIPHERS = ":".join(
 try:
     from ssl import SSLContext  # Modern SSL?
 except ImportError:
-
-    class SSLContext(object):  # Platform-specific: Python 2
+    from PyQt5.QtCore import QObject
+    class SSLContext(QObject):  # Platform-specific: Python 2
         def __init__(self, protocol_version):
             self.protocol = protocol_version
             # Use default values from a real SSLContext

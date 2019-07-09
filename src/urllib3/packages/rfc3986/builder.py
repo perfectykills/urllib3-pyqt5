@@ -17,8 +17,8 @@ from . import compat
 from . import normalizers
 from . import uri
 
-
-class URIBuilder(object):
+from PyQt5.QtCore import QObject
+class URIBuilder(QObject):
     """Object to aid in building up a URI Reference from parts.
 
     .. note::

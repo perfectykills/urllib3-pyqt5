@@ -46,17 +46,17 @@ from .util.retry import Retry
 from .util.timeout import Timeout
 from .util.url import get_host, Url, NORMALIZABLE_SCHEMES
 from .util.queue import LifoQueue
-
+from PyQt5.QtCore import QObject
 
 xrange = six.moves.xrange
 
 log = logging.getLogger(__name__)
 
-_Default = object()
+_Default = QObject()
 
 
 # Pool objects
-class ConnectionPool(object):
+class ConnectionPool(QObject):
     """
     Base class for all connection pools, such as
     :class:`.HTTPConnectionPool` and :class:`.HTTPSConnectionPool`.

@@ -57,15 +57,15 @@ port_by_scheme = {"http": 80, "https": 443}
 # When it comes time to update this value as a part of regular maintenance
 # (ie test_recent_date is failing) update it to ~6 months before the current date.
 RECENT_DATE = datetime.date(2019, 1, 1)
+from PyQt5.QtCore import QObject
 
-
-class DummyConnection(object):
+class DummyConnection(QObject):
     """Used to detect a failed ConnectionCls import."""
 
     pass
 
 
-class HTTPConnection(_HTTPConnection, object):
+class HTTPConnection(_HTTPConnection, QObject):
     """
     Based on httplib.HTTPConnection but provides an extra constructor
     backwards-compatibility layer between older and newer Pythons.

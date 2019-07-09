@@ -17,8 +17,8 @@ from . import exceptions
 from . import misc
 from . import normalizers
 
-
-class Validator(object):
+from PyQt5.QtCore import QObject
+class Validator(QObject):
     """Object used to configure validation of all objects in rfc3986.
 
     .. versionadded:: 1.0

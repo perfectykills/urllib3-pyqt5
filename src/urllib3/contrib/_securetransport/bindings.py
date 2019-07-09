@@ -393,8 +393,9 @@ try:
 except (AttributeError):
     raise ImportError("Error initializing ctypes")
 
+from PyQt5.QtCore import QObject
 
-class CFConst(object):
+class CFConst(QObject):
     """
     A class object that acts as essentially a namespace for CoreFoundation
     constants.
@@ -403,7 +404,7 @@ class CFConst(object):
     kCFStringEncodingUTF8 = CFStringEncoding(0x08000100)
 
 
-class SecurityConst(object):
+class SecurityConst(QObject):
     """
     A class object that acts as essentially a namespace for Security constants.
     """

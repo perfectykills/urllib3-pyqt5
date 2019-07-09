@@ -258,8 +258,9 @@ def get_subj_alt_name(peer_cert):
 
     return names
 
+from PyQt5.QtCore import QObject
 
-class WrappedSocket(object):
+class WrappedSocket(QObject):
     """API-compatibility wrapper for Python OpenSSL's Connection-class.
 
     Note: _makefile_refs, _drop() and _reuse() are needed for the garbage
@@ -407,7 +408,7 @@ else:  # Platform-specific: Python 3
 WrappedSocket.makefile = makefile
 
 
-class PyOpenSSLContext(object):
+class PyOpenSSLContext(QObject):
     """
     I am a wrapper class for the PyOpenSSL ``Context`` object. I am responsible
     for translating the interface of the standard library ``SSLContext`` object

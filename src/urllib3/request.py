@@ -5,9 +5,9 @@ from .packages.six.moves.urllib.parse import urlencode
 
 
 __all__ = ["RequestMethods"]
+from PyQt5.QtCore import QObject
 
-
-class RequestMethods(object):
+class RequestMethods(QObject):
     """
     Convenience mixin for classes who implement a :meth:`urlopen` method, such
     as :class:`~urllib3.connectionpool.HTTPConnectionPool` and

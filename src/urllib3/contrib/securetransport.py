@@ -76,6 +76,8 @@ except ImportError:  # Platform-specific: Python 3
     _fileobject = None
     from ..packages.backports.makefile import backport_makefile
 
+from PyQt5 import QtCore
+
 __all__ = ["inject_into_urllib3", "extract_from_urllib3"]
 
 # SNI always works
@@ -316,8 +318,8 @@ def _write_callback(connection_id, data_buffer, data_length_pointer):
 _read_callback_pointer = Security.SSLReadFunc(_read_callback)
 _write_callback_pointer = Security.SSLWriteFunc(_write_callback)
 
-
-class WrappedSocket(object):
+from PyQt5.QtCore import QObject
+class WrappedSocket(QObject):
     """
     API-compatibility wrapper for Python's OpenSSL wrapped socket object.
 
@@ -750,7 +752,7 @@ else:  # Platform-specific: Python 3
 WrappedSocket.makefile = makefile
 
 
-class SecureTransportContext(object):
+class SecureTransportContext(QObject):
     """
     I am a wrapper class for the SecureTransport library, to translate the
     interface of the standard library ``SSLContext`` object to calls into

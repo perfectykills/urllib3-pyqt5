@@ -11,8 +11,8 @@ except ImportError:
     pass
 else:
     ACCEPT_ENCODING += ",br"
-
-_FAILEDTELL = object()
+from PyQt5.QtCore import QObject
+_FAILEDTELL = QObject()
 
 
 def make_headers(

@@ -4,16 +4,15 @@ try:
     from collections.abc import Mapping, MutableMapping
 except ImportError:
     from collections import Mapping, MutableMapping
-try:
-    from threading import RLock
-except ImportError:  # Platform-specific: No threads available
 
-    class RLock:
-        def __enter__(self):
-            pass
+# Platform-specific: No threads available
+# TODO RLock with pyqt
+class RLock:
+    def __enter__(self):
+        pass
 
-        def __exit__(self, exc_type, exc_value, traceback):
-            pass
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass
 
 
 from collections import OrderedDict
@@ -23,8 +22,8 @@ from .packages.six import iterkeys, itervalues, PY3
 
 __all__ = ["RecentlyUsedContainer", "HTTPHeaderDict"]
 
-
-_Null = object()
+from PyQt5.QtCore import QObject
+_Null = QObject()
 
 
 class RecentlyUsedContainer(MutableMapping):

@@ -25,8 +25,8 @@ RequestHistory = namedtuple(
     "RequestHistory", ["method", "url", "error", "status", "redirect_location"]
 )
 
-
-class Retry(object):
+from PyQt5.QtCore import QObject
+class Retry(QObject):
     """ Retry configuration.
 
     Each retry attempt will create a new Retry object with updated values, so
