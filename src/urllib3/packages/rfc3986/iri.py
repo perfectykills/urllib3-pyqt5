@@ -28,8 +28,9 @@ try:
 except ImportError:  # pragma: no cover
     idna = None
 
-
-class IRIReference(namedtuple("IRIReference", misc.URI_COMPONENTS), uri.URIMixin):
+#namedtuple("IRIReference", )
+class IRIReference(uri.URIMixin):
+    _keys = misc.URI_COMPONENTS
     """Immutable object representing a parsed IRI Reference.
 
     Can be encoded into an URIReference object via the procedure

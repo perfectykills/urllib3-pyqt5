@@ -20,9 +20,9 @@ from . import compat
 from . import misc
 from . import normalizers
 from ._mixin import URIMixin
-
-
-class URIReference(namedtuple("URIReference", misc.URI_COMPONENTS), URIMixin):
+#namedtuple("URIReference", )
+class URIReference(URIMixin):
+    _keys = misc.URI_COMPONENTS
     """Immutable object representing a parsed URI Reference.
 
     .. note::

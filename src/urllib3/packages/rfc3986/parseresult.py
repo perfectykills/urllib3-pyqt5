@@ -20,13 +20,12 @@ from . import exceptions
 from . import misc
 from . import normalizers
 from . import uri
+from . import compat
 
 __all__ = ("ParseResult", "ParseResultBytes")
 
 PARSED_COMPONENTS = ("scheme", "userinfo", "host", "port", "path", "query", "fragment")
-
-
-class ParseResultMixin(object):
+class ParseResultMixin(compat.CompNamedTuple):
     def _generate_authority(self, attributes):
         # I swear I did not align the comparisons below. That's just how they
         # happened to align based on pep8 and attribute lengths.
@@ -62,8 +61,9 @@ class ParseResultMixin(object):
         """Shim to match the standard library."""
         return self.query
 
-
-class ParseResult(namedtuple("ParseResult", PARSED_COMPONENTS), ParseResultMixin):
+#namedtuple("ParseResult", )
+class ParseResult(ParseResultMixin):
+    _keys = PARSED_COMPONENTS
     """Implementation of urlparse compatibility class.
 
     This uses the URIReference logic to handle compatibility with the
@@ -231,10 +231,9 @@ class ParseResult(namedtuple("ParseResult", PARSED_COMPONENTS), ParseResultMixin
             parse_result = self.copy_with(host=host)
         return parse_result.reference.unsplit()
 
-
-class ParseResultBytes(
-    namedtuple("ParseResultBytes", PARSED_COMPONENTS), ParseResultMixin
-):
+#namedtuple("ParseResultBytes", )
+class ParseResultBytes(ParseResultMixin):
+    _keys = PARSED_COMPONENTS
     """Compatibility shim for the urlparse.ParseResultBytes object."""
 
     def __new__(

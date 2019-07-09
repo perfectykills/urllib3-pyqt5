@@ -103,7 +103,7 @@ orig_util_SSLContext = util.ssl_.SSLContext
 # This is good: if we had to lock in the callbacks we'd drastically slow down
 # the performance of this code.
 _connection_refs = weakref.WeakValueDictionary()
-_connection_ref_lock = threading.Lock()
+_connection_ref_lock = QtCore.QMutex()
 
 # Limit writes to 16kB. This is OpenSSL's limit, but we'll cargo-cult it over
 # for no better reason than we need *a* limit, and this one is right there.
@@ -464,7 +464,7 @@ class WrappedSocket(QObject):
         # Here we need to compute the handle to use. We do this by taking the
         # id of self modulo 2**31 - 1. If this is already in the dictionary, we
         # just keep incrementing by one until we find a free space.
-        with _connection_ref_lock:
+        with QtCore.QMutexLocker(_connection_ref_lock):
             handle = id(self) % 2147483647
             while handle in _connection_refs:
                 handle = (handle + 1) % 2147483647

@@ -5,13 +5,11 @@ from . import exceptions as exc
 from . import misc
 from . import normalizers
 from . import validators
+from . import compat
 
 
-class URIMixin(object):
+class URIMixin(compat.CompNamedTuple):
     """Mixin with all shared methods for URIs and IRIs."""
-
-    __hash__ = tuple.__hash__
-
     def authority_info(self):
         """Return a dictionary with the ``userinfo``, ``host``, and ``port``.
 
